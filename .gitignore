@@ -1,0 +1,53 @@
+# Data and datasets
+data/
+datasets/
+RAF-DB/
+RAFDB/
+raf-basic/
+CAFE/
+cafe/
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.7z
+
+# Model artifacts
+checkpoints/
+models/
+runs/
+wandb/
+outputs/
+
+# Python
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*.pyo
+.ipynb_checkpoints/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+
+# Environment and secrets
+.env
+.env.*
+*.key
+*.pem
+secrets/
+configs/local.*
+
+# Editors and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs and temporary files
+*.log
+*.tmp
+*.bak

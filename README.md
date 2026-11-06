@@ -29,9 +29,7 @@ FYP/
 ├── docs/
 │   ├── project-brief.md
 │   ├── progress-log.md
-│   ├── raf-db-age-summary.md
-│   └── proposal/
-│       └── projectproposal.html
+│   └── raf-db-age-summary.md
 └── scripts/
     └── check_raf_db_annotations.py
 ```
@@ -40,7 +38,7 @@ The `src/`, `configs/`, `data/`, `checkpoints/` and `results/` folders will be a
 
 ## Current status
 
-- D1 project plan and D2 literature review are written and validated.
+- D1 project plan and D2 literature review are complete and kept outside this repository for now.
 - RAF-DB basic-subset annotation files have been checked: 15,339 images, 12,271 train and 3,068 test.
 - Verified age counts: 0–3 = 1,612; 4–19 = 2,657; 20–39 = 8,193; 40–69 = 2,422; 70+ = 455.
 - Adult 20+ subset: 11,070 images (8,817 train / 2,253 test).
@@ -70,7 +68,7 @@ Do **not** commit RAF-DB or CAFE images, raw annotation files, model checkpoints
 1. Confirm CAFE/Databrary access and official RAF-DB access.
 2. Build the RAF-DB data pipeline and subject-disjoint CAFE split specification.
 3. Check LoRA support for ResNet-50 convolution layers in HuggingFace PEFT.
-4. Create the W&B project and log the first baseline configuration.
+4. Create the W&B project `project-proposal-topic2-adult-child-fer-peft` and log the first baseline configuration.
 5. Draft D3 requirements.
 
 ## Documentation
@@ -78,4 +76,3 @@ Do **not** commit RAF-DB or CAFE images, raw annotation files, model checkpoints
 - [Project brief](docs/project-brief.md)
 - [Progress log](docs/progress-log.md)
 - [RAF-DB age summary](docs/raf-db-age-summary.md)
-- [D1/D2 proposal](docs/proposal/projectproposal.html)

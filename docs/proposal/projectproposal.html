@@ -220,12 +220,11 @@
   <div class="subtitle">D1 Project Planning and D2 Literature Review</div>
   <p class="center">Semester 1, 2026/2027</p>
   <div class="meta">
-    <p><strong>Student:</strong> [Student Name] ([Matric No.])<br>
-    <strong>Supervisor:</strong> [Supervisor Name]<br>
-    <strong>Programme:</strong> [Programme Name]</p>
-    <p><strong>Date:</strong> 4 November 2026</p>
+    <p><strong>Student:</strong> Joshua A/L Murugan (A212437)<br>
+    <strong>Supervisor:</strong> Dr. Kok Ven Jyn<br>
+    <strong>Programme:</strong> Intelligent Machine (Computer Science)</p>
   </div>
-  <p class="note">This document contains the project plan (D1) and the literature review (D2, Chapters 1 and 2). Bracketed fields should be completed before submission. The document is written for supervisor review and is not a final thesis.</p>
+  <p class="note">This document contains the project plan (D1) and the literature review (D2, Chapters 1 and 2). The document is written for supervisor review and is not a final thesis.</p>
 </div>
 
 <!-- ================= TOC ================= -->
@@ -288,7 +287,7 @@
   <p><strong>Problem 1 — Unquantified cross-age degradation.</strong> It is known that adult-trained FER models can degrade on child faces (Zheng et al., 2019; Witherow et al., 2019), but the size and class-specific pattern of the degradation are not well established for modern ResNet-50 and ViT-B/16 backbones. Aggregate accuracy can conceal poor recall on difficult classes such as fear, sadness and surprise.</p>
   <p><strong>Problem 2 — Unclear PEFT trade-off under child data scarcity.</strong> Full fine-tuning, LoRA and linear probing have different capacity, memory and overfitting behaviour. The reviewed literature does not establish whether LoRA matches full fine-tuning on CAFE, especially in low-data regimes, or whether any gain is concentrated in majority classes.</p>
   <p><strong>Problem 3 — Age–emotion entanglement.</strong> Age-related morphology may be correlated with expression cues. A domain-adversarial loss can remove age information, but an unconditional adversary may also remove emotion-relevant information. The project must test whether a class-conditional adapter improves child recognition without degrading adult recognition.</p>
-  <p><strong>Problem 4 — Evaluation confounds.</strong> RAF-DB and CAFE differ in capture conditions, pose, background, label distribution and population. A cross-dataset comparison therefore confounds age with dataset shift. The project will report this limitation, use subject-disjoint splits, and optionally add a posed adult control (CK+) to separate age from capture conditions more carefully.</p>
+  <p><strong>Problem 4 — Evaluation confounds.</strong> RAF-DB and CAFE differ in capture conditions, pose, background, label distribution and population. A cross-dataset comparison therefore confounds age with dataset shift. The project will report this limitation, use subject-disjoint splits, and avoid causal claims about age.</p>
   <p><strong>Problem 5 — Reproducibility.</strong> Child data access is restricted, CAFE images cannot be redistributed, and small-sample results are sensitive to splits and seeds. The project requires documented data versions, subject-disjoint folds, fixed seeds, and traceable experiment logs.</p>
 
   <h2 id="d1-4">4. Research Questions</h2>
@@ -320,8 +319,6 @@
   <h2 id="d1-6">6. Scope and Boundaries</h2>
   <h3>6.1 Data and task</h3>
   <p>The project uses RAF-DB as the adult source and CAFE as the child target. RAF-DB provides 29,672 real-world images, including 15,339 images in the seven-class basic-emotion subset with an official 12,271/3,068 train–test split (Li et al., 2017). RAF-DB also provides age-range, gender and race attributes; the source set will be filtered or stratified using the age metadata, and the actual age distribution will be reported rather than assumed to be adult-only. CAFE provides 1,192 photographs of 154 children aged 2–8 years across seven classes (LoBue &amp; Thrasher, 2015). CAFE access requires Databrary authorisation, and the images are copyright-protected.</p>
-  <p>An optional CK+ control may be added. CK+ is a lab-controlled adult dataset with 593 sequences from 123 subjects (Lucey et al., 2010). Comparing CK+→CAFE with RAF-DB→CAFE helps separate age-related shift from capture-condition shift, although it does not eliminate the confound.</p>
-
   <h3>6.2 Models and adaptation</h3>
   <p>The core models are ResNet-50 (He et al., 2016) and ViT-B/16 (Dosovitskiy et al., 2021), initialised with ImageNet weights. The adaptation conditions are linear probing, LoRA and full fine-tuning. LoRA will be implemented with the HuggingFace PEFT library where supported (Mangrulkar et al., 2022); a custom LoRA wrapper may be needed for convolutional layers in ResNet-50 because LoRA was originally designed for linear layers. The age-aware adapter is a bottleneck adapter with a gradient-reversal domain classifier. POSTER++ (Mao et al., 2025) is an optional external comparison, not a core dependency.</p>
 
@@ -344,10 +341,10 @@
   <h3>7.1 Data preparation</h3>
   <ul>
     <li>Download RAF-DB under its terms and record the version, checksum and split.</li>
-    <li>Apply for CAFE access through Databrary and record the authorisation date and usage conditions.</li>
+    <li>CAFE application submitted through Databrary; record the authorisation date and usage conditions when approved.</li>
     <li>Detect and align faces (MTCNN or RetinaFace), resize to 224×224, and apply consistent augmentation: random horizontal flip, small rotation, colour jitter and random resized crop for training; deterministic resize and centre crop for evaluation.</li>
     <li>Create subject-disjoint CAFE folds using child identity, stratified by emotion and age bin. No child may appear in both training and test folds.</li>
-    <li>Use the full CAFE set as the primary benchmark and record any excluded images. As a sensitivity analysis, optionally repeat the key comparison on the 709-image mouth-closed subset used by Witherow et al. (2019) to support direct comparison with that line of work.</li>
+    <li>Use the full CAFE set as the primary benchmark and record any excluded images.</li>
   </ul>
 
   <h3>7.2 Models and training</h3>
@@ -355,7 +352,7 @@
     <li><strong>Adult source training:</strong> train ResNet-50 and ViT-B/16 on RAF-DB, using the age metadata to exclude child images where possible and reporting the resulting age distribution. Use class-balanced cross-entropy or class weights, AdamW, mixed precision, early stopping and a fixed seed set.</li>
     <li><strong>Linear probe:</strong> freeze the backbone and train a linear classifier on CAFE features.</li>
     <li><strong>LoRA:</strong> freeze the backbone; inject low-rank updates into attention and MLP projections of ViT-B/16; try ranks 4, 8 and 16 with alpha = 2r and dropout 0.05. For ResNet-50, apply LoRA to linear and 1×1 convolutional layers if time permits; otherwise use full fine-tuning as the CNN adaptation baseline.</li>
-    <li><strong>Full fine-tuning:</strong> update all parameters with a small learning rate and early stopping. On a 12 GB GPU, use batch size 8–16 with gradient accumulation and gradient checkpointing for ViT-B/16.</li>
+    <li><strong>Full fine-tuning:</strong> update all parameters with a small learning rate and early stopping. On the 6 GB RTX 4050, use batch size 2–4 with gradient accumulation and gradient checkpointing for ViT-B/16.</li>
     <li><strong>Low-data regimes:</strong> 1, 5, 10 and 20 shots per class from the CAFE training folds, repeated across folds and seeds.</li>
   </ul>
 
@@ -420,7 +417,7 @@
   </div>
 
   <h2 id="d1-10">10. Resource and Risk Management</h2>
-  <p><strong>Hardware:</strong> one consumer GPU with up to 12 GB memory. ViT-B/16 LoRA is feasible with mixed precision; full fine-tuning requires batch accumulation and gradient checkpointing. If memory is insufficient, ViT-S/16 or ResNet-50 will be used for the full fine-tuning baseline, and this substitution will be reported.</p>
+  <p><strong>Hardware:</strong> one NVIDIA RTX 4050 GPU with 6 GB memory. ViT-B/16 LoRA is feasible with mixed precision; full fine-tuning requires batch accumulation and gradient checkpointing. If memory is insufficient, ViT-S/16 or ResNet-50 will be used for the full fine-tuning baseline, and this substitution will be reported.</p>
   <p><strong>Software:</strong> Python, PyTorch, torchvision, timm (Wightman, 2019), HuggingFace Transformers and PEFT (Mangrulkar et al., 2022), scikit-learn, Captum, Weights &amp; Biases, and Git.</p>
   <div class="table-wrap">
     <table>
@@ -429,10 +426,10 @@
         <tr><th>Risk</th><th>Likelihood</th><th>Impact</th><th>Mitigation</th></tr>
       </thead>
       <tbody>
-        <tr><td>CAFE/Databrary access is delayed.</td><td>Medium</td><td>High</td><td>Apply in Week 6; use RAF-DB and CK+ to build the pipeline; set a go/no-go at Week 8; fall back to a public child dataset only if its licence permits, or pivot to the RAF-DB-only audit.</td></tr>
-        <tr><td>12 GB GPU memory is insufficient for full fine-tuning.</td><td>Medium</td><td>Medium</td><td>Use LoRA, mixed precision, gradient accumulation and checkpointing; reduce batch size; use ViT-S/16 for the full fine-tuning baseline.</td></tr>
+        <tr><td>CAFE/Databrary access is delayed.</td><td>Medium</td><td>High</td><td>Application submitted; awaiting approval; use RAF-DB to build the pipeline; set a go/no-go at Week 8; fall back to a public child dataset only if its licence permits, or pivot to the RAF-DB-only audit.</td></tr>
+        <tr><td>6 GB GPU memory is insufficient for full fine-tuning.</td><td>Medium</td><td>Medium</td><td>Use LoRA, mixed precision, gradient accumulation and checkpointing; reduce batch size; use ViT-S/16 for the full fine-tuning baseline.</td></tr>
         <tr><td>CAFE is small and posed; results may not generalise.</td><td>High</td><td>High</td><td>Use subject-disjoint 5-fold cross-validation, multiple seeds, confidence intervals and explicit limitation statements.</td></tr>
-        <tr><td>Cross-dataset age effect is confounded with capture conditions.</td><td>High</td><td>High</td><td>Add CK+ as a posed adult control; report the confound; avoid causal claims about age.</td></tr>
+        <tr><td>Cross-dataset age effect is confounded with capture conditions.</td><td>High</td><td>High</td><td>Report the confound; avoid causal claims about age.</td></tr>
         <tr><td>Age-adversarial loss removes emotion information.</td><td>Medium</td><td>High</td><td>Use class-conditional GRL; compare λ values; monitor emotion accuracy and age-probe accuracy jointly.</td></tr>
         <tr><td>Novelty overlap with prior adult-child adaptation work.</td><td>Medium</td><td>Medium</td><td>Position the contribution as a PEFT benchmark plus age-aware adapter; cite FACE-BE-SELF, PE-CLIP and FineCLIPER explicitly.</td></tr>
         <tr><td>Time loss and late submission.</td><td>High</td><td>High</td><td>Prioritise E1/E2; treat E3 as a stretch goal; freeze scope at Week 10.</td></tr>
@@ -465,7 +462,7 @@
   <p><strong>Cross-age degradation is not well quantified for modern backbones.</strong> Prior work shows that adult-trained models can fail on children (Zheng et al., 2019; Witherow et al., 2019), but the size and class-specific pattern of the degradation are not well established for ResNet-50 and ViT-B/16. Aggregate accuracy can hide poor recall on fear, sadness and surprise, which are often the difficult classes in FER.</p>
   <p><strong>The PEFT trade-off under child data scarcity is unclear.</strong> Full fine-tuning, LoRA and linear probing differ in capacity, memory and overfitting behaviour. CAFE is small (1,192 images), so full fine-tuning may overfit, while linear probing may underfit. It is not known whether LoRA matches full fine-tuning on child FER, whether gains survive in low-data regimes, and whether any gain is concentrated in majority classes.</p>
   <p><strong>Age and emotion features may be entangled.</strong> A domain-adversarial loss can remove age information, but an unconditional adversary may also remove emotion-relevant information. The project must test whether a class-conditional adapter improves child recognition without degrading adult recognition, and whether an age probe confirms reduced age predictability.</p>
-  <p><strong>Evaluation is confounded.</strong> RAF-DB and CAFE differ in capture conditions, pose, background, label distribution and population. A cross-dataset comparison therefore confounds age with dataset shift. CAFE is also posed and small. The project will use subject-disjoint splits, report confidence intervals, and optionally add CK+ as a posed adult control. It will not claim that an observed difference is caused by age alone.</p>
+  <p><strong>Evaluation is confounded.</strong> RAF-DB and CAFE differ in capture conditions, pose, background, label distribution and population. A cross-dataset comparison therefore confounds age with dataset shift. CAFE is also posed and small. The project will use subject-disjoint splits, report confidence intervals, and avoid causal claims about age.</p>
   <p><strong>Reproducibility is constrained.</strong> CAFE access is restricted, images cannot be redistributed, and small-sample results are sensitive to splits and seeds. The project requires documented data versions, subject-disjoint folds, fixed seeds and traceable experiment logs.</p>
 
   <h3 id="ch1-3">1.3 Research Questions</h3>
@@ -497,7 +494,7 @@
   <h3 id="ch1-5">1.5 Project Scope</h3>
   <h4>1.5.1 Data and classification task</h4>
   <p>The project uses RAF-DB as the adult source and CAFE as the child target. RAF-DB contains 29,672 real-world images, including 15,339 images in the seven-class basic-emotion subset with an official 12,271/3,068 train–test split (Li et al., 2017). RAF-DB also provides age-range, gender and race attributes. The source set will be filtered or stratified using the age metadata, and the actual age distribution will be reported rather than assumed to be adult-only. CAFE contains 1,192 photographs of 154 children aged 2–8 years across seven classes (LoBue &amp; Thrasher, 2015). Access requires Databrary authorisation, and the images are copyright-protected. CAFE is posed, frontal and standardised; it is not a spontaneous or infant dataset. The project therefore studies children, not infants.</p>
-  <p>An optional CK+ control may be added. CK+ is a lab-controlled adult dataset with 593 sequences from 123 subjects (Lucey et al., 2010). Comparing CK+→CAFE with RAF-DB→CAFE helps separate age-related shift from capture-condition shift, although it does not eliminate the confound. No new data will be collected.</p>
+  <p>No new data will be collected.</p>
 
   <h4>1.5.2 Models and adaptation</h4>
   <p>The core models are ResNet-50 (He et al., 2016) and ViT-B/16 (Dosovitskiy et al., 2021), initialised with ImageNet weights. The adaptation conditions are linear probing, LoRA and full fine-tuning. LoRA will be implemented with the HuggingFace PEFT library where supported (Mangrulkar et al., 2022); a custom LoRA wrapper may be needed for convolutional layers in ResNet-50 because LoRA was originally designed for linear layers. The age-aware adapter is a bottleneck adapter with a gradient-reversal domain classifier. POSTER++ (Mao et al., 2025) is an optional external comparison, not a core dependency. Dynamic video FER, multimodal signals and large language models are outside the scope.</p>
@@ -545,7 +542,7 @@
   <p>CAFE contains 1,192 photographs of 154 children aged 2–8 years, with seven expressions, a standard off-white background and overhead lighting (LoBue, 2014; LoBue &amp; Thrasher, 2015). The images are copyright-protected and available through Databrary authorisation. CAFE-Ss provides two subsets of 140 photographs each, validated with 1,000 adults, for researchers who need smaller stimulus sets (Yang &amp; LoBue, 2020). EmoReact is a multimodal dataset of children's emotional responses (Nojavanasghari et al., 2016). LIRIS-CSE contains spontaneous children's facial expressions (Khan et al., 2019). These resources are valuable but small, heterogeneous and often restricted. CAFE remains the most practical controlled target for this project, but its posed nature and narrow age range limit generalisation.</p>
 
   <h4>2.3.4 Cross-dataset confounds</h4>
-  <p>A comparison between RAF-DB and CAFE changes age, capture conditions, pose, background, label distribution and population at the same time. An observed drop in accuracy cannot be attributed to age alone. A stronger design adds a posed adult control such as CK+ and compares CK+→CAFE with RAF-DB→CAFE. Even then, the datasets differ in label definitions and subject populations. The project will therefore describe the result as a cross-age, cross-dataset benchmark rather than a pure age effect.</p>
+  <p>A comparison between RAF-DB and CAFE changes age, capture conditions, pose, background, label distribution and population at the same time. An observed drop in accuracy cannot be attributed to age alone. Even so, the datasets differ in label definitions and subject populations. The project will therefore describe the result as a cross-age, cross-dataset benchmark rather than a pure age effect.</p>
 
   <h3 id="ch2-4">2.4 Adult-to-Child Transfer and Age-Related Domain Shift</h3>
   <h4>2.4.1 Evidence of degradation</h4>
@@ -619,7 +616,6 @@
         <tr><td>CAFE (LoBue &amp; Thrasher, 2015)</td><td>Children aged 2–8; posed; standard background</td><td>1,192 photographs; 154 children; seven expressions</td><td>Primary child target; small, posed, copyright-protected; not infants.</td></tr>
         <tr><td>CAFE-Ss (Yang &amp; LoBue, 2020)</td><td>Children; two validated subsets</td><td>140 photographs per subset; validated with 1,000 adults</td><td>Smaller alternative; useful for low-data stress tests.</td></tr>
         <tr><td>AffectNet (Mollahosseini et al., 2019)</td><td>In-the-wild</td><td>More than one million images; about 450,000 manually labelled for eight basic expressions</td><td>Large adult benchmark; outside the core scope because of size and compute.</td></tr>
-        <tr><td>CK+ (Lucey et al., 2010)</td><td>Lab-controlled adults</td><td>593 sequences from 123 subjects</td><td>Optional posed adult control to separate age from capture conditions.</td></tr>
         <tr><td>FER2013 (Goodfellow et al., 2013)</td><td>Web-collected grayscale faces</td><td>35,887 images, 48×48</td><td>Useful low-resolution benchmark; not used in the core study.</td></tr>
         <tr><td>EmoReact (Nojavanasghari et al., 2016)</td><td>Children; multimodal video</td><td>Children's emotional responses in video</td><td>Alternative child resource; dynamic and multimodal, outside core scope.</td></tr>
         <tr><td>LIRIS-CSE (Khan et al., 2019)</td><td>Children; spontaneous expressions</td><td>Spontaneous child facial expressions</td><td>Alternative child resource; different protocol and access conditions.</td></tr>
@@ -671,7 +667,7 @@
         <tr><th>Review finding</th><th>Project decision</th><th>Objective</th></tr>
       </thead>
       <tbody>
-        <tr><td>Adult-child transfer degrades, but evidence is confounded.</td><td>Use RAF-DB and CAFE with subject-disjoint splits; add CK+ as an optional posed adult control; report the confound.</td><td>1</td></tr>
+        <tr><td>Adult-child transfer degrades, but evidence is confounded.</td><td>Use RAF-DB and CAFE with subject-disjoint splits; report the confound.</td><td>1</td></tr>
         <tr><td>CAFE is small and posed.</td><td>Use 5-fold subject-disjoint cross-validation, multiple seeds and confidence intervals; avoid deployment claims.</td><td>1 and 2</td></tr>
         <tr><td>PEFT is effective in adult/dynamic FER but underexplored for child FER.</td><td>Compare linear probe, LoRA and full fine-tuning under full-data and low-data regimes.</td><td>2</td></tr>
         <tr><td>Accuracy can hide poor minority-class recall.</td><td>Report macro-F1, UAR, per-class recall and calibration, not only accuracy.</td><td>2</td></tr>

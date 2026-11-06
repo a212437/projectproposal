@@ -1,10 +1,12 @@
 # Adult-to-Child Facial Expression Recognition with PEFT
 
-**Student:** [Student Name] ([Matric No.])
-**Supervisor:** [Supervisor Name]
-**Programme:** [Programme Name]
-**Status:** Week 6 — D1/D2 complete; repository scaffold in place; dataset access pending.
+**Student:** Joshua A/L Murugan (A212437)
+**Supervisor:** Dr. Kok Ven Jyn (vj.kok@ukm.edu.my)
+**Programme:** Intelligent Machine (Computer Science)
+**Status:** Week 6 — D1/D2 complete; repository pushed; CAFE application submitted; RAF-DB not yet acquired.
 **Repository:** https://github.com/a212437/projectproposal
+**Hardware:** NVIDIA RTX 4050, 6 GB VRAM
+**Experiment tracking:** W&B project `project-proposal-topic2-adult-child-fer-peft`
 **Last updated:** 4 November 2026
 
 ## Project summary
@@ -42,17 +44,15 @@ The `src/`, `configs/`, `data/`, `checkpoints/` and `results/` folders will be a
 - RAF-DB basic-subset annotation files have been checked: 15,339 images, 12,271 train and 3,068 test.
 - Verified age counts: 0–3 = 1,612; 4–19 = 2,657; 20–39 = 8,193; 40–69 = 2,422; 70+ = 455.
 - Adult 20+ subset: 11,070 images (8,817 train / 2,253 test).
-- CAFE/Databrary access and official RAF-DB access are still pending.
+- CAFE/Databrary application submitted and awaiting approval; official RAF-DB access not yet acquired.
 
 ## To complete before submission
 
-- [ ] Fill `[Student Name]`, `[Matric No.]`, `[Supervisor Name]` and `[Programme Name]` in `README.md`, `docs/project-brief.md`, `docs/progress-log.md` and `docs/proposal/projectproposal.html`.
-- [ ] Make the GitHub repository private and add the supervisor as a collaborator.
-- [ ] Create the W&B project and replace `[W&B project URL]` in `docs/progress-log.md`.
-- [ ] Obtain official RAF-DB access and re-check the annotation counts against the official release.
-- [ ] Obtain CAFE/Databrary authorisation and record the date and conditions.
-- [ ] Record the exact GPU model, VRAM and installed package versions for reproducibility.
-- [ ] Decide whether to include the optional CK+ control and the 709-image CAFE subset.
+- [ ] Make the GitHub repository private and invite the supervisor at `vj.kok@ukm.edu.my` as a collaborator.
+- [ ] Create the W&B project `project-proposal-topic2-adult-child-fer-peft` and add its URL to `docs/progress-log.md`.
+- [ ] Obtain official RAF-DB access (not yet acquired) and re-check the annotation counts against the official release.
+- [ ] Record the CAFE/Databrary approval date and conditions when approved.
+- [ ] Record installed package versions for reproducibility.
 
 ## Data policy
 

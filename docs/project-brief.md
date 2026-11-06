@@ -1,9 +1,8 @@
 # Project Brief
 
-**Student:** [Student Name] ([Matric No.])
-**Supervisor:** [Supervisor Name]
-**Programme:** [Programme Name]
-**Date:** 4 November 2026
+**Student:** Joshua A/L Murugan (A212437)
+**Supervisor:** Dr. Kok Ven Jyn (vj.kok@ukm.edu.my)
+**Programme:** Intelligent Machine (Computer Science)
 
 This document confirms the final topic, objectives and methodology and explains how RAF-DB and CAFE will be used.
 
@@ -32,7 +31,7 @@ This document confirms the final topic, objectives and methodology and explains 
 - **Age-aware adapter.** Add a bottleneck adapter with a gradient-reversal domain classifier, in a class-conditional form. Two variants: adult-vs-child labels and CAFE age bins (2–4, 5–6, 7–8) so that dataset differences do not stand in for age.
 - **Evaluation.** Accuracy, macro-F1, unweighted average recall, per-class recall (fear, sadness, surprise), calibration error, parameter percentage, memory and training time.
 - **Statistics.** Five subject-disjoint folds, three seeds and confidence intervals that resample children, not images.
-- **Reproducibility.** Private GitHub repository, W&B run tracking, fixed seeds and logged split files.
+- **Reproducibility.** Private GitHub repository, W&B run tracking, fixed seeds, logged split files and a 6 GB NVIDIA RTX 4050 GPU.
 
 ## 5. How the two datasets will be used
 
@@ -44,14 +43,14 @@ This document confirms the final topic, objectives and methodology and explains 
 | **Used for** | Source training, validation, adult test (RQ3 check) | Source-only baseline (RQ1), linear probe, LoRA and full fine-tuning (RQ2), few-shot runs, adapter (RQ3) |
 | **Limits** | In-the-wild, mixed ages, different capture conditions from CAFE; non-commercial research use only, with no redistribution or reproduction of its images or derived data | Small, posed, copyright-protected; labels are the expression each child was asked to pose; no images will be redistributed or shown in the report |
 
-Both datasets are needed because the question is about the gap between adults and children. RAF-DB supplies the adult model and CAFE supplies the child test. Their capture conditions differ, so the result will be reported as a cross-age, cross-dataset benchmark and not as a pure age effect. An optional CK+ adult control may help to separate age from capture conditions.
+Both datasets are needed because the question is about the gap between adults and children. RAF-DB supplies the adult model and CAFE supplies the child test. Their capture conditions differ, so the result will be reported as a cross-age, cross-dataset benchmark and not as a pure age effect.
 
 **Verification note (4 November 2026).** The RAF-DB age counts were checked against a public mirror of the official annotation files. The official release will still be used for the final experiments, and the counts will be re-checked once access is granted.
 
 ## 6. Dataset access I need
 
-- **CAFE:** Access is through Databrary and needs authorisation by an authorised investigator, with students joining as affiliates.
-- **RAF-DB:** The owners require an e-mail application from a university account (name, affiliation, department, position, and a statement agreeing to the terms: non-commercial research use only, no sharing with third parties) before they send the password for the images and the annotation files that hold the age ranges.
+- **CAFE:** Access is through Databrary and needs authorisation by an authorised investigator, with students joining as affiliates. Status: application submitted; awaiting approval.
+- **RAF-DB:** The owners require an e-mail application from a university account (name, affiliation, department, position, and a statement agreeing to the terms: non-commercial research use only, no sharing with third parties) before they send the password for the images and the annotation files that hold the age ranges. Status: not yet acquired.
 - **If CAFE is delayed:** Build and test the pipeline on RAF-DB with approval at Week 8. The fallback is an age-stratified analysis inside RAF-DB (ages 0–19 versus adults), which has few images for some classes.
 
 ## 7. Timeline

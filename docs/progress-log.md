@@ -1,11 +1,12 @@
 # Progress Log
 
-**Student:** [Student Name] ([Matric No.])
-**Supervisor:** [Supervisor Name]
-**Programme:** [Programme Name]
+**Student:** Joshua A/L Murugan (A212437)
+**Supervisor:** Dr. Kok Ven Jyn (vj.kok@ukm.edu.my)
+**Programme:** Intelligent Machine (Computer Science)
 **Project:** Benchmarking and PEFT of Adult FER Models on Child Expressions
 **Repository:** https://github.com/a212437/projectproposal
-**Experiment tracking:** [W&B project URL]
+**Experiment tracking:** W&B project `project-proposal-topic2-adult-child-fer-peft` (URL pending)
+**Hardware:** NVIDIA RTX 4050, 6 GB VRAM
 **Last updated:** 4 November 2026
 
 ## Week 6 — 2–8 November 2026
@@ -20,6 +21,7 @@
 - Wrote the project brief to finalise the topic, objectives, methodology and dataset use.
 - Created the initial repository structure, README, requirements file, RAF-DB age summary and annotation-check script.
 - Pushed the initial scaffold to https://github.com/a212437/projectproposal.
+- Recorded student, supervisor, programme and hardware details; removed the optional CK+ control and 709-image CAFE subset from the scope.
 
 ### Key Results & Interpretation
 
@@ -30,18 +32,18 @@
 
 ### Problems/Issues
 
-- CAFE access needs Databrary authorisation, which cannot be obtained without a supervisor or institutional route.
-- Official RAF-DB access is still pending. The current annotation files are a public mirror, so the counts will be re-checked against the official release.
+- CAFE/Databrary application submitted; awaiting approval.
+- Official RAF-DB access not yet acquired. The current annotation files are a public mirror, so the counts will be re-checked against the official release.
 - RAF-DB and CAFE differ in capture conditions as well as age, so any drop in accuracy cannot be attributed to age alone. An age-bin adversary inside CAFE and a dataset-identity probe are planned to check this.
-- Full fine-tuning of ViT-B/16 may be limited by GPU memory, so gradient accumulation and checkpointing are planned.
+- Full fine-tuning of ViT-B/16 may be limited by the 6 GB RTX 4050, so gradient accumulation and checkpointing are planned.
 
 ### Plan for Next Week (9–15 Nov 2026)
 
 - Write the data pipeline and the subject-disjoint split specification, using RAF-DB only until CAFE access is confirmed.
 - Check that HuggingFace PEFT supports LoRA on ResNet-50 convolution layers.
-- Create the W&B project and log the first baseline configuration.
+- Create the W&B project `project-proposal-topic2-adult-child-fer-peft` and log the first baseline configuration.
 - Start drafting D3 (requirements).
-- Make the GitHub repository private, add the supervisor, and create the W&B project.
+- Make the GitHub repository private and invite the supervisor at vj.kok@ukm.edu.my.
 
 ## Template for Future Weeks
 

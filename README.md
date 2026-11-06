@@ -44,6 +44,16 @@ The `src/`, `configs/`, `data/`, `checkpoints/` and `results/` folders will be a
 - Adult 20+ subset: 11,070 images (8,817 train / 2,253 test).
 - CAFE/Databrary access and official RAF-DB access are still pending.
 
+## To complete before submission
+
+- [ ] Fill `[Student Name]`, `[Matric No.]`, `[Supervisor Name]` and `[Programme Name]` in `README.md`, `docs/project-brief.md`, `docs/progress-log.md` and `docs/proposal/projectproposal.html`.
+- [ ] Make the GitHub repository private and add the supervisor as a collaborator.
+- [ ] Create the W&B project and replace `[W&B project URL]` in `docs/progress-log.md`.
+- [ ] Obtain official RAF-DB access and re-check the annotation counts against the official release.
+- [ ] Obtain CAFE/Databrary authorisation and record the date and conditions.
+- [ ] Record the exact GPU model, VRAM and installed package versions for reproducibility.
+- [ ] Decide whether to include the optional CK+ control and the 709-image CAFE subset.
+
 ## Data policy
 
 Do **not** commit RAF-DB or CAFE images, raw annotation files, model checkpoints or W&B run directories. Both datasets are for non-commercial research use and restrict redistribution. Keep data outside the repository in a local `data/` folder, which is ignored by Git. Commit only code, configuration, aggregate statistics, split specifications without image data, and documentation.

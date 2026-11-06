@@ -18,6 +18,7 @@
 - Checked the CAFE dataset details against the original paper and its Databrary record.
 - Wrote the project brief to finalise the topic, objectives, methodology and dataset use.
 - Created the initial repository structure, README, requirements file, RAF-DB age summary and annotation-check script.
+- Pushed the initial scaffold to https://github.com/a212437/projectproposal.
 
 ### Key Results & Interpretation
 
@@ -39,7 +40,7 @@
 - Check that HuggingFace PEFT supports LoRA on ResNet-50 convolution layers.
 - Create the W&B project and log the first baseline configuration.
 - Start drafting D3 (requirements).
-- Create the private GitHub repository and push the current scaffold.
+- Make the GitHub repository private, add the supervisor, and create the W&B project.
 
 ## Template for Future Weeks
 

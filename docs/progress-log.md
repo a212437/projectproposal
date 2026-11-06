@@ -2,6 +2,7 @@
 
 **Student:** [Student Name] ([Matric No.])
 **Supervisor:** [Supervisor Name]
+**Programme:** [Programme Name]
 **Project:** Benchmarking and PEFT of Adult FER Models on Child Expressions
 **Repository:** https://github.com/a212437/projectproposal
 **Experiment tracking:** [W&B project URL]

@@ -4,6 +4,7 @@
 **Supervisor:** [Supervisor Name]
 **Programme:** [Programme Name]
 **Status:** Week 6 — D1/D2 complete; repository scaffold in place; dataset access pending.
+**Repository:** https://github.com/a212437/projectproposal
 **Last updated:** 4 November 2026
 
 ## Project summary
